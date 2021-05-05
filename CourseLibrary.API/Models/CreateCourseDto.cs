@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace CourseLibrary.API.Models
 {
-    public class CourseForCreationDto
+    public class CreateCourseDto
     {
         public string Title { get; set; }
 

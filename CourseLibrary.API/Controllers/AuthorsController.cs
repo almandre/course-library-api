@@ -33,35 +33,35 @@ namespace CourseLibrary.API.Controllers
         [HttpGet()]
         [HttpHead]
         public ActionResult<IEnumerable<AuthorDto>> GetAuthors(
-            [FromQuery] AuthorsResourceParameters authorsResourceParameters)
+            [FromQuery] AuthorsParameters authorsParameters)
         {
-            var authorsFromRepo = _courseLibraryRepository.GetAuthors(authorsResourceParameters);
-            return Ok(_mapper.Map<IEnumerable<AuthorDto>>(authorsFromRepo));
+            var authors = _courseLibraryRepository.GetAuthors(authorsParameters);
+            return Ok(_mapper.Map<IEnumerable<AuthorDto>>(authors));
         }
 
         [HttpGet("{authorId}", Name = "GetAuthor")]
-        public IActionResult GetAuthors(Guid authorId)
+        public ActionResult<AuthorDto> GetAuthors(Guid authorId)
         {
-            var authorsFromRepo = _courseLibraryRepository.GetAuthor(authorId);
+            var authors = _courseLibraryRepository.GetAuthor(authorId);
 
-            if (authorsFromRepo == null)
+            if (authors == null)
             {
                 return NotFound();
             }
 
-            return Ok(_mapper.Map<AuthorDto>(authorsFromRepo));
+            return _mapper.Map<AuthorDto>(authors);
         }
 
         [HttpPost]
-        public ActionResult<AuthorDto> CreateAuthor(AuthorForCreationDto authorDto)
+        public ActionResult<AuthorDto> CreateAuthor(CreateAuthorDto createAuthorDto)
         {
-            var newAuthor = _mapper.Map<Author>(authorDto);
+            var newAuthor = _mapper.Map<Author>(createAuthorDto);
             _courseLibraryRepository.AddAuthor(newAuthor);
             _courseLibraryRepository.Save();
 
-            var author = _mapper.Map<AuthorDto>(newAuthor);
+            var authorDto = _mapper.Map<AuthorDto>(newAuthor);
 
-            return CreatedAtRoute("GetAuthor", new { authorId = author.Id }, author);
+            return CreatedAtRoute("GetAuthor", new { authorId = authorDto.Id }, authorDto);
         }
     }
 }

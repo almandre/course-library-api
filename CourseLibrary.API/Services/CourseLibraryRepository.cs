@@ -123,26 +123,26 @@ namespace CourseLibrary.API.Services
             return _context.Authors.ToList<Author>();
         }
          
-        public IEnumerable<Author> GetAuthors(AuthorsResourceParameters authorsResourceParameters)
+        public IEnumerable<Author> GetAuthors(AuthorsParameters authorsParameters)
         {
-            if (string.IsNullOrEmpty(authorsResourceParameters.mainCategory) &&
-                string.IsNullOrEmpty(authorsResourceParameters.searchQuery))
+            if (string.IsNullOrEmpty(authorsParameters.mainCategory) &&
+                string.IsNullOrEmpty(authorsParameters.searchQuery))
             {
                 return GetAuthors();
             }
 
             var authors = _context.Authors as IQueryable<Author>;
 
-            if (!string.IsNullOrEmpty(authorsResourceParameters.mainCategory))
+            if (!string.IsNullOrEmpty(authorsParameters.mainCategory))
             {
-                var mainCategory = authorsResourceParameters.mainCategory.Trim();
+                var mainCategory = authorsParameters.mainCategory.Trim();
 
                 authors = authors.Where(author => author.MainCategory == mainCategory);
             }
 
-            if (!string.IsNullOrEmpty(authorsResourceParameters.searchQuery))
+            if (!string.IsNullOrEmpty(authorsParameters.searchQuery))
             {
-                var searchQuery = authorsResourceParameters.searchQuery.Trim();
+                var searchQuery = authorsParameters.searchQuery.Trim();
 
                 authors = authors.Where(author =>
                     author.MainCategory.Contains(searchQuery) ||

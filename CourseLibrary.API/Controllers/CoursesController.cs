@@ -29,7 +29,7 @@ namespace CourseLibrary.API.Controllers
         }
 
         [HttpGet()]
-        public ActionResult<IEnumerable<CourseDto>> GetCoursesOfAuthor(Guid authorId)
+        public ActionResult<IEnumerable<CourseDto>> GetCourses(Guid authorId)
         {
             if (!_courseLibraryRepository.AuthorExists(authorId))
             {
@@ -41,8 +41,8 @@ namespace CourseLibrary.API.Controllers
             return Ok(_mapper.Map<IEnumerable<CourseDto>>(coursesOfAuthorFromRepo));
         }
 
-        [HttpGet("{courseId}", Name = "GetCourseOfAuthor")]
-        public ActionResult<CourseDto> GetCourseOfAuthor(Guid authorId, Guid courseId)
+        [HttpGet("{courseId}", Name = "GetCourse")]
+        public ActionResult<CourseDto> GetCourse(Guid authorId, Guid courseId)
         {
             if (!_courseLibraryRepository.AuthorExists(authorId))
             {
@@ -60,26 +60,26 @@ namespace CourseLibrary.API.Controllers
         }
 
         [HttpPost]
-        public ActionResult<CourseDto> CreateCourseOfAuthor(Guid authorId, CourseForCreationDto courseDto)
+        public ActionResult<CourseDto> CreateCourse(Guid authorId, CreateCourseDto createCourseDto)
         {
             if (!_courseLibraryRepository.AuthorExists(authorId))
             {
                 return NotFound();
             }
 
-            var newCourse = _mapper.Map<Course>(courseDto);
+            var newCourse = _mapper.Map<Course>(createCourseDto);
             _courseLibraryRepository.AddCourse(authorId, newCourse);
             _courseLibraryRepository.Save();
 
-            var course = _mapper.Map<CourseDto>(newCourse);
+            var courseDto = _mapper.Map<CourseDto>(newCourse);
 
             return CreatedAtRoute(
-                "GetCourseOfAuthor",
+                "GetCourse",
                 new {
-                    authorId = course.AuthorId,
-                    courseId = course.Id
+                    authorId = courseDto.AuthorId,
+                    courseId = courseDto.Id
                 },
-                course
+                courseDto
             );
         }
     }

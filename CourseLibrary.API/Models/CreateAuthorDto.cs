@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace CourseLibrary.API.Models
 {
-    public class AuthorForCreationDto
+    public class CreateAuthorDto
     {
         public Guid Id { get; set; }
 
