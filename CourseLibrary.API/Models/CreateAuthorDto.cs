@@ -16,5 +16,8 @@ namespace CourseLibrary.API.Models
         public DateTime DateOfBirth { get; set; }
 
         public string MainCategory { get; set; }
+
+        public ICollection<CreateCourseDto> Courses { get; set; }
+            = new List<CreateCourseDto>();
     }
 }
