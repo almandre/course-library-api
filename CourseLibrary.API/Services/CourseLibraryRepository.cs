@@ -123,7 +123,7 @@ namespace CourseLibrary.API.Services
             return _context.Authors.ToList<Author>();
         }
          
-        public IEnumerable<Author> GetAuthors(AuthorsResoruceParameters authorsResourceParameters)
+        public IEnumerable<Author> GetAuthors(AuthorsResourceParameters authorsResourceParameters)
         {
             if (string.IsNullOrEmpty(authorsResourceParameters.mainCategory) &&
                 string.IsNullOrEmpty(authorsResourceParameters.searchQuery))

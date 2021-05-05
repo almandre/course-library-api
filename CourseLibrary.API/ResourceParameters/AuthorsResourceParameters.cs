@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace CourseLibrary.API.ResourceParameters
 {
-    public class AuthorsResoruceParameters
+    public class AuthorsResourceParameters
     {
         public string mainCategory { get; set; }
 
