@@ -108,5 +108,13 @@ namespace CourseLibrary.API.Controllers
                 new { ids = idsAsString },
                 authorsDto);
         }
+
+        [HttpOptions]
+        public IActionResult GetAuthorsOptions()
+        {
+            Response.Headers.Add("Allow", "GET,OPTIONS,POST");
+
+            return Ok();
+        }
     }
 }
