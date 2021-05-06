@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace CourseLibrary.API.Models
 {
     [CourseValidation(ErrorMessage = "Title must be different from description.")]
-    public abstract class UpsertCourseDto
+    public abstract class HandleCourseDto
     {
         [Required(ErrorMessage = "You should fill out a title.")]
         [MaxLength(100)]

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CourseLibrary.API.Models
 {
-    public class UpdateCourseDto : UpsertCourseDto
+    public class UpdateCourseDto : HandleCourseDto
     {
         [Required(ErrorMessage = "You should fill out a description")]
         public override string Description { get => base.Description; set => base.Description = value; }

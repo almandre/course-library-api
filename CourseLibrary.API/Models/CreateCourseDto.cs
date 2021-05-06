@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CourseLibrary.API.Models
 {
-    public class CreateCourseDto : UpsertCourseDto
+    public class CreateCourseDto : HandleCourseDto
     {
 
     }
