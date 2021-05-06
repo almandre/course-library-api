@@ -36,7 +36,9 @@ namespace CourseLibrary.API.Controllers
             [FromQuery] AuthorsParameters authorsParameters)
         {
             var authors = _courseLibraryRepository.GetAuthors(authorsParameters);
-            return Ok(_mapper.Map<IEnumerable<AuthorDto>>(authors));
+            var authorsDto = _mapper.Map<IEnumerable<AuthorDto>>(authors);
+
+            return Ok(authorsDto);
         }
 
         [HttpGet("{authorId}", Name = "GetAuthor")]
@@ -64,8 +66,8 @@ namespace CourseLibrary.API.Controllers
             return CreatedAtRoute("GetAuthor", new { authorId = authorDto.Id }, authorDto);
         }
 
-        [HttpGet("collection/({ids})", Name = "GetAuthorCollection")]
-        public IActionResult GetAuthorCollection(
+        [HttpGet("collection/({ids})", Name = "GetAuthorsCollection")]
+        public ActionResult<IEnumerable<AuthorDto>> GetAuthorsCollection(
             [FromRoute]
             [ModelBinder(BinderType = typeof(ArrayModelBind))] IEnumerable<Guid> ids)
         {
@@ -102,7 +104,7 @@ namespace CourseLibrary.API.Controllers
             var authorsDto = _mapper.Map<IEnumerable<AuthorDto>>(authors);
             var idsAsString = string.Join(",", authorsDto.Select(item => item.Id));
 
-            return CreatedAtRoute("GetAuthorCollection",
+            return CreatedAtRoute("GetAuthorsCollection",
                 new { ids = idsAsString },
                 authorsDto);
         }
