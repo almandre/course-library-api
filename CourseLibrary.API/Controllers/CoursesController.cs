@@ -127,7 +127,7 @@ namespace CourseLibrary.API.Controllers
         }
 
         [HttpPatch("{courseId}")]
-        public ActionResult UpdatePartially(
+        public ActionResult UpdateCoursePartially(
             Guid authorId,
             Guid courseId,
             JsonPatchDocument<UpdateCourseDto> patchDocument)
@@ -184,10 +184,32 @@ namespace CourseLibrary.API.Controllers
             return NoContent();
         }
 
+        [HttpDelete("{courseId}")]
+        public ActionResult DeleteCourse(Guid authorId, Guid courseId)
+        {
+            if (!_courseLibraryRepository.AuthorExists(authorId))
+            {
+                return NotFound();
+            }
+
+            var course = _courseLibraryRepository.GetCourse(authorId, courseId);
+
+            if (course == null)
+            {
+                return NotFound();
+            }
+
+            _courseLibraryRepository.DeleteCourse(course);
+
+            _courseLibraryRepository.Save();
+
+            return NoContent();
+        }
+
         [HttpOptions]
         public IActionResult GetCoursesOptions()
         {
-            Response.Headers.Add("Allow", "GET,OPTIONS,POST,PUT,PATCH");
+            Response.Headers.Add("Allow", "GET,OPTIONS,POST,PUT,PATCH,DELETE");
 
             return Ok();
         }
