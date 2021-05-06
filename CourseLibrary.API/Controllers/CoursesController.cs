@@ -3,6 +3,7 @@ using CourseLibrary.API.Entities;
 using CourseLibrary.API.Models;
 using CourseLibrary.API.Services;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -121,10 +122,41 @@ namespace CourseLibrary.API.Controllers
             return NoContent();
         }
 
+        [HttpPatch("{courseId}")]
+        public ActionResult UpdatePartially(
+            Guid authorId,
+            Guid courseId,
+            JsonPatchDocument<UpdateCourseDto> patchDocument)
+        {
+            if (!_courseLibraryRepository.AuthorExists(authorId))
+            {
+                return NotFound();
+            }
+
+            var course = _courseLibraryRepository.GetCourse(authorId, courseId);
+
+            if (course == null)
+            {
+                return NotFound();
+            }
+
+            var updateCourseDto = _mapper.Map<UpdateCourseDto>(course);
+
+            patchDocument.ApplyTo(updateCourseDto);
+
+            _mapper.Map(updateCourseDto, course);
+
+            _courseLibraryRepository.UpdateCourse(course);
+
+            _courseLibraryRepository.Save();
+
+            return NoContent();
+        }
+
         [HttpOptions]
         public IActionResult GetCoursesOptions()
         {
-            Response.Headers.Add("Allow", "GET,OPTIONS,POST");
+            Response.Headers.Add("Allow", "GET,OPTIONS,POST,PUT,PATCH");
 
             return Ok();
         }
