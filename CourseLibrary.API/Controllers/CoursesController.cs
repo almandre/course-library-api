@@ -36,9 +36,10 @@ namespace CourseLibrary.API.Controllers
                 return NotFound();
             }
 
-            var coursesOfAuthorFromRepo = _courseLibraryRepository.GetCourses(authorId);
+            var courses = _courseLibraryRepository.GetCourses(authorId);
+            var coursesDto = _mapper.Map<IEnumerable<CourseDto>>(courses);
 
-            return Ok(_mapper.Map<IEnumerable<CourseDto>>(coursesOfAuthorFromRepo));
+            return Ok(coursesDto);
         }
 
         [HttpGet("{courseId}", Name = "GetCourse")]
@@ -49,14 +50,14 @@ namespace CourseLibrary.API.Controllers
                 return NotFound();
             }
 
-            var courseOfAuthorFromRepo = _courseLibraryRepository.GetCourse(authorId, courseId);
+            var course = _courseLibraryRepository.GetCourse(authorId, courseId);
 
-            if (courseOfAuthorFromRepo == null)
+            if (course == null)
             {
                 return NotFound();
             }
 
-            return _mapper.Map<CourseDto>(courseOfAuthorFromRepo);
+            return _mapper.Map<CourseDto>(course);
         }
 
         [HttpPost]
