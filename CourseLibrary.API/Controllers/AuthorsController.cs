@@ -109,10 +109,27 @@ namespace CourseLibrary.API.Controllers
                 authorsDto);
         }
 
+        [HttpDelete("{authorId}")]
+        public ActionResult DeleteAuthor(Guid authorId)
+        {
+            if (!_courseLibraryRepository.AuthorExists(authorId))
+            {
+                return NotFound();
+            }
+
+            var author = _courseLibraryRepository.GetAuthor(authorId);
+
+            _courseLibraryRepository.DeleteAuthor(author);
+
+            _courseLibraryRepository.Save();
+
+            return NoContent();
+        }
+
         [HttpOptions]
         public IActionResult GetAuthorsOptions()
         {
-            Response.Headers.Add("Allow", "GET,OPTIONS,POST");
+            Response.Headers.Add("Allow", "GET,OPTIONS,POST,DELETE");
 
             return Ok();
         }
